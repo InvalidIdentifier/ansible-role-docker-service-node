@@ -1,0 +1,22 @@
+galaxy_info:
+  role_name: docker_service_node
+  author: invalididentifier
+  description: installs docker service containers
+
+  license: GPL-2.0-or-later
+
+  min_ansible_version: "2.9"
+
+  galaxy_tags: []
+
+dependencies:
+  - name: invalididentifier.docker_common_setup
+    src: https://github.com/InvalidIdentifier/ansible-role-docker-common-setup
+    scm: git
+
+  - name: invalididentifier.docker_common_services
+    src: https://github.com/InvalidIdentifier/ansible-role-docker-common-services
+    scm: git
+
+collections:
+  - community.docker

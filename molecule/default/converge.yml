@@ -1,0 +1,7 @@
+---
+- name: apply ansible-role_docker_service_node
+  hosts: all
+  roles:
+    - role: invalididentifier.docker_common_setup
+    - role: invalididentifier.docker_service_node
+    - role: invalididentifier.docker_common_services

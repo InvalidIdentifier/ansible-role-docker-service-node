@@ -1,0 +1,14 @@
+- name: prepare system
+  hosts: all
+  tasks:
+    - name: install python3
+      apt:
+        name: python3
+        state: present
+        update_cache: yes
+
+    - name: create home directory for compose files
+      file:
+        path: "/home/user/"
+        state: directory
+        mode: '0755'

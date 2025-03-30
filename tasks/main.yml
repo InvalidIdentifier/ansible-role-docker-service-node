@@ -1,0 +1,41 @@
+---
+# extend traefik_entrypoints with infra ports
+- name: extend traefik_entrypoints with infra ports
+  set_fact:
+    traefik_entrypoints: "{{ traefik_entrypoints | default({}) | combine(infra_entrypoints, recursive=True) }}"
+  when: infra_entrypoints | length > 0
+
+# create directory for bindmount folders
+- name: create directory bindmounts
+  file:
+    path: /data/bindmounts
+    state: directory
+    mode: '0755'
+
+# create directories for bindmount
+- name: create bindmount directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /data/bindmounts/homeassistant
+
+# copy serviceaccount homeassistant
+- name: copy serviceaccount homeassistant
+  template:
+    src: SERVICE_ACCOUNT.JSON.j2
+    dest: /data/bindmounts/homeassistant/SERVICE_ACCOUNT.JSON.j2
+
+# copy docker-compose.yml
+- name: copy docker-compose.yml
+  template:
+    src: docker-compose-service.yml.j2
+    dest: /home/user/docker-compose-service.yml
+
+# run docker container
+- name: start containers
+  command: docker compose -f /home/user/docker-compose-service.yml up -d --remove-orphans
+  when: 
+    - ansible_virtualization_type != "docker"
+...

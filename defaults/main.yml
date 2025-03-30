@@ -1,0 +1,3 @@
+---
+domain: "{{ lookup('env', 'DOMAIN') }}"
+infra_entrypoints: {}
