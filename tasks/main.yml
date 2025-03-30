@@ -33,6 +33,10 @@
     src: docker-compose-service.yml.j2
     dest: /home/user/docker-compose-service.yml
 
+# docker login for seafile
+- name: seafile cr login
+  command: docker login docker.seadrive.org --username seafile --password '{{ seafile_docker_login }}'
+
 # run docker container
 - name: start containers
   command: docker compose -f /home/user/docker-compose-service.yml up -d --remove-orphans
