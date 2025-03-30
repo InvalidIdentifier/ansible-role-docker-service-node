@@ -516,9 +516,4 @@ services:
 
 networks:
   web:
-    driver: bridge
-    name: web
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.21.0.0/16"
+    external: true
