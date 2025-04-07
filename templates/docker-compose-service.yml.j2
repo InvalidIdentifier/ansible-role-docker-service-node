@@ -26,16 +26,8 @@ services:
       #Secure intern
       - traefik.http.routers.ha-secure.entrypoints=https
       - traefik.http.routers.ha-secure.rule=Host(`homeassistant.${DOMAIN}`)
-      - traefik.http.routers.ha-secure.middlewares=forward-auth-verify
       - traefik.http.routers.ha-secure.tls=true
       - traefik.http.routers.ha-secure.service=ha
-      # Secure + GoogleAssistant + OpenAuth
-      - traefik.http.routers.ha-secure-ga.entrypoints=https
-      - 'traefik.http.routers.ha-secure-ga.rule=(Host(`homeassistant.${DOMAIN}`) && PathPrefix(`/api/google_assistant`)) || (Host(`homeassistant.${DOMAIN}`) && PathPrefix(`/auth/token`))'
-      - traefik.http.routers.ha-secure-ga.tls=true
-      - traefik.http.routers.ha-secure-ga.service=ha
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   influxdbHa:
     image: "influxdb:latest"
@@ -68,8 +60,6 @@ services:
       - traefik.http.routers.influx-secure.tls=true
       - traefik.http.routers.influx-secure.service=influx
       - traefik.http.services.influx.loadbalancer.server.port=8086
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   grafanaAppHa:
     image: grafana/grafana:latest
@@ -102,8 +92,6 @@ services:
       - traefik.http.routers.sensors-secure.tls=true
       - traefik.http.routers.sensors-secure.service=sensors
       - traefik.http.services.sensors.loadbalancer.server.port=3000
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   grafanaDbHa:
     image: postgres:16
@@ -118,9 +106,6 @@ services:
     dns: ["${DNS_SERVER}"]
     network_mode: web
     restart: unless-stopped
-    labels:
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
 ### EDMS Stack ###
 
@@ -134,9 +119,6 @@ services:
     dns: ["${DNS_SERVER}"]
     network_mode: web
     restart: unless-stopped
-    labels:
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   paperlessDb:
     image: docker.io/library/postgres:13
@@ -157,9 +139,6 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
-    labels:
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   paperlessWeb:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -207,8 +186,6 @@ services:
       - traefik.http.routers.paperless-secure.rule=Host(`paperless.${DOMAIN}`)
       - traefik.http.routers.paperless-secure.tls=true
       - traefik.http.routers.paperless-secure.service=paperless
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
 ### Tools ###
 
@@ -243,8 +220,6 @@ services:
       - traefik.http.routers.wyl-secure.tls=true
       - traefik.http.routers.wyl-secure.service=wyl
       - traefik.http.services.wyl.loadbalancer.server.port=8840
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   # meTube #
 
@@ -276,8 +251,6 @@ services:
       - traefik.http.routers.tube-secure.tls=true
       - traefik.http.routers.tube-secure.service=tube
       - traefik.http.services.tube.loadbalancer.server.port=8081
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
 ### Organization ###
 
@@ -314,8 +287,6 @@ services:
       - traefik.http.routers.tasks-secure.tls=true
       - traefik.http.routers.tasks-secure.service=tasks
       - traefik.http.services.tasks.loadbalancer.server.port=3456
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   vikunjaDb:
     image: postgres:16
@@ -333,9 +304,6 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h localhost -U $$POSTGRES_USER"]
       interval: 2s
-    labels:
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
  # Immich #
 
@@ -376,8 +344,6 @@ services:
       - traefik.http.routers.immich-secure.tls=true
     #  - traefik.http.routers.immich-secure.middlewares=forward-auth-verify
       - traefik.http.routers.immich-secure.service=immich
-    # Watchtower
-      - "com.centurylinklabs.watchtower.enable=true"
 
   immich-machine-learning:
     container_name: immich_machine_learning
